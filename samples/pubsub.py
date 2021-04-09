@@ -145,33 +145,32 @@ if __name__ == '__main__':
     # Publish message to server desired number of times.
     # This step is skipped if message is blank.
     # This step loops forever if count was set to 0.
-    
-    # The 'Algorithm' to randomly generate the temp and humidity values
-    newTemp = random.randint(50,80)
-    newHumidity = float(random.randrange(40, 80, 1)/100)
 
-    random_val = random.randint(0,100)
-    if random_val < 10:
-        newTemp = -999
-    elif random_val >= 10 and random_val < 20:
-        newTemp = 87
-    elif random_val >= 20 and random_val < 30:
-        newHumidity = 0.05
-    elif random_val >= 30 and random_val < 55:
-        newHumidity = 0.95
-
-    newMessage = {"device_name": "averySensor01",
-    "readings": { "temperature": newTemp, "humidity": newHumidity },
-    "timestamp": datetime.datetime.now().timestamp()}
-
-    if newMessage:
-        if args.count == 0:
-            print ("Sending messages until program killed")
-        else:
-            print ("Sending {} message(s)".format(args.count))
+    if args.count == 0:
+        print ("Sending messages until program killed")
+    else:
+        print ("Sending {} message(s)".format(args.count))
 
         publish_count = 1
         while (publish_count <= args.count) or (args.count == 0):
+            # The 'Algorithm' to randomly generate the temp and humidity values
+            newTemp = random.randint(50,80)
+            newHumidity = float(random.randrange(40, 80, 1)/100)
+
+            random_val = random.randint(0,100)
+            if random_val < 10:
+                newTemp = -999
+            elif random_val >= 10 and random_val < 20:
+                newTemp = 87
+            elif random_val >= 20 and random_val < 30:
+                newHumidity = 0.05
+            elif random_val >= 30 and random_val < 55:
+                newHumidity = 0.95
+
+            newMessage = {"device_name": "averySensor01",
+            "readings": { "temperature": newTemp, "humidity": newHumidity },
+            "timestamp": datetime.datetime.now().timestamp}
+            
             message = "{} [{}]".format(newMessage, publish_count)
             print("Publishing message to topic '{}': {}".format(args.topic, message))
             mqtt_connection.publish(
