@@ -1,7 +1,7 @@
 # Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 # SPDX-License-Identifier: Apache-2.0.
 
-import datetime
+from datetime import datetime
 import random
 import argparse
 from awscrt import io, mqtt, auth, http
@@ -169,8 +169,8 @@ if __name__ == '__main__':
 
             newMessage = {"device_name": "averySensor01",
             "readings": { "temperature": newTemp, "humidity": newHumidity },
-            "timestamp": datetime.datetime.now().timestamp}
-            
+            "timestamp": datetime.now().strftime("%m/%d/%Y, %H:%M:%S")}
+
             message = "{} [{}]".format(newMessage, publish_count)
             print("Publishing message to topic '{}': {}".format(args.topic, message))
             mqtt_connection.publish(
