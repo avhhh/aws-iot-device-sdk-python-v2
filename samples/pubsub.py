@@ -2,6 +2,7 @@
 # SPDX-License-Identifier: Apache-2.0.
 
 from datetime import datetime
+import json
 import random
 import argparse
 from awscrt import io, mqtt, auth, http
@@ -171,11 +172,10 @@ if __name__ == '__main__':
             "readings": { "temperature": newTemp, "humidity": newHumidity },
             "timestamp": datetime.now().strftime("%m/%d/%Y, %H:%M:%S")}
 
-            message = "{} [{}]".format(newMessage, publish_count)
-            print("Publishing message to topic '{}': {}".format(args.topic, message))
+            print("Publishing message to topic '{}': {}".format(args.topic, json.dumps(newMessage)))
             mqtt_connection.publish(
                 topic=args.topic,
-                payload=message,
+                payload=json.dumps(newMessage),
                 qos=mqtt.QoS.AT_LEAST_ONCE)
             time.sleep(1)
             publish_count += 1
